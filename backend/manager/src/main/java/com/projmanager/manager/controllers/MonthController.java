@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,7 @@ import com.projmanager.manager.models.Month;
 import com.projmanager.manager.repository.MonthRepository;
 import java.text.SimpleDateFormat;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
 public class MonthController {
@@ -40,5 +44,17 @@ public class MonthController {
 	    monthRepository.save(monthObject);
 
 	    return new ResponseEntity<>("Month record created successfully", HttpStatus.CREATED);
+	}
+	
+	@DeleteMapping("/deletemonth/{monthId}")
+	public ResponseEntity<String> deleteMonth(@PathVariable Long monthId) {
+	    // Check if the month record exists
+	    if (!monthRepository.existsById(monthId)) {
+	        return new ResponseEntity<>("Month record not found", HttpStatus.NOT_FOUND);
+	    }
+
+	    monthRepository.deleteById(monthId);
+
+	    return new ResponseEntity<>("Month record deleted successfully", HttpStatus.OK);
 	}
 }

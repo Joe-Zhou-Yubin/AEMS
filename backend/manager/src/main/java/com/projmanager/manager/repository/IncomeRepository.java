@@ -9,4 +9,6 @@ import com.projmanager.manager.models.Income;
 @Repository
 public interface IncomeRepository extends JpaRepository<Income, Long> {
 	List<Income> findByMonthid(Long monthId);
+	List<Income> findByMonthidAndCategory(Long monthid, String category);
+
 }

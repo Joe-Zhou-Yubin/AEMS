@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+import com.projmanager.manager.models.Expenditure;
 import com.projmanager.manager.models.Income;
 import com.projmanager.manager.repository.IncomeRepository;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
 public class IncomeController {
@@ -67,5 +69,31 @@ public class IncomeController {
         
         return new ResponseEntity<>(incomeList, HttpStatus.OK);
     }
+    
+    @GetMapping("/gettotalincomebycategory/{monthid}/{category}")
+    public ResponseEntity<Double> getTotalIncomeByMonthAndCategory(
+            @PathVariable Long monthid,
+            @PathVariable String category) {
+        List<Income> incomeList = incomeRepository.findByMonthidAndCategory(monthid, category);
+        
+        double totalIncome = incomeList.stream()
+                .mapToDouble(Income::getIncome)
+                .sum();
+
+        return new ResponseEntity<>(totalIncome, HttpStatus.OK);
+    }
+    
+    @GetMapping("/gettotalincome/{monthid}")
+    public ResponseEntity<Double> getTotalIncomeByMonth(@PathVariable Long monthid) {
+        List<Income> incomeList = incomeRepository.findByMonthid(monthid);
+        
+        double totalIncome = incomeList.stream()
+                .mapToDouble(Income::getIncome)
+                .sum();
+
+        return new ResponseEntity<>(totalIncome, HttpStatus.OK);
+    }
+
+
 
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import com.projmanager.manager.models.Expenditure;
 import com.projmanager.manager.repository.ExpenditureRepository;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
 public class ExpenditureController {
@@ -23,7 +24,7 @@ public class ExpenditureController {
     }
 
     @PostMapping("/createexpenditure/{monthId}")
-    public ResponseEntity<String> createIncome(
+    public ResponseEntity<String> createExpenditure(
             @PathVariable Long monthId,
             @RequestBody Expenditure expenditureRequest) {
 
@@ -45,7 +46,7 @@ public class ExpenditureController {
     }
     
     @DeleteMapping("/deleteexpenditure/{expId}")
-    public ResponseEntity<String> deleteIncome(@PathVariable Long expId) {
+    public ResponseEntity<String> deleteExpenditure(@PathVariable Long expId) {
         // Check if the income record exists
         if (!expenditureRepository.existsById(expId)) {
             return new ResponseEntity<>("Expenditure record not found", HttpStatus.NOT_FOUND);
@@ -58,7 +59,7 @@ public class ExpenditureController {
     }
     
     @GetMapping("/getexpenditure/{monthid}")
-    public ResponseEntity<List<Expenditure>> getIncomeByMonth(@PathVariable Long monthid) {
+    public ResponseEntity<List<Expenditure>> getExpenditureByMonth(@PathVariable Long monthid) {
         List<Expenditure> incomeList = expenditureRepository.findByMonthid(monthid);
         
         if (incomeList.isEmpty()) {
@@ -67,5 +68,42 @@ public class ExpenditureController {
         
         return new ResponseEntity<>(incomeList, HttpStatus.OK);
     }
+    
+    @GetMapping("/getexpenditurebycategory/{monthid}/{category}")
+    public ResponseEntity<List<Expenditure>> getExpenditureByCategory(@PathVariable Long monthid, @PathVariable String category) {
+        List<Expenditure> expenditureList = expenditureRepository.findByMonthidAndCategory(monthid, category);
+        
+        if (expenditureList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
+        return new ResponseEntity<>(expenditureList, HttpStatus.OK);
+    }
+    
+    @GetMapping("/gettotalbycategory/{monthid}/{category}")
+    public ResponseEntity<Double> getTotalExpenditureByMonthAndCategory(
+            @PathVariable Long monthid,
+            @PathVariable String category) {
+        List<Expenditure> expenditureList = expenditureRepository.findByMonthidAndCategory(monthid, category);
+        
+        double totalExpenditure = expenditureList.stream()
+                .mapToDouble(Expenditure::getExpenditure)
+                .sum();
+
+        return new ResponseEntity<>(totalExpenditure, HttpStatus.OK);
+    }
+    
+    @GetMapping("/gettotalbymonth/{monthid}")
+    public ResponseEntity<Double> getTotalExpenditureByMonth(@PathVariable Long monthid) {
+        List<Expenditure> expenditureList = expenditureRepository.findByMonthid(monthid);
+
+        double totalExpenditure = expenditureList.stream()
+                .mapToDouble(Expenditure::getExpenditure)
+                .sum();
+
+        return new ResponseEntity<>(totalExpenditure, HttpStatus.OK);
+    }
+
+
 
 }
