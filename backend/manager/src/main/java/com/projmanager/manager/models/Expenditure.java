@@ -38,7 +38,15 @@ public class Expenditure {
     public Expenditure() {
     }
 
-    // Parameterized constructor
+    public Expenditure(Long monthid, String username, String category, double expenditure, Date date) {
+		this.monthid = monthid;
+		this.username = username;
+		this.category = category;
+		this.expenditure = expenditure;
+		this.date = date;
+	}
+
+	// Parameterized constructor
     public Expenditure(String username, Long monthid,String category, double expenditure, Date date) {
         this.username = username;
         this.monthid = monthid;

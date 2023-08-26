@@ -38,7 +38,15 @@ public class Income {
     public Income() {
     }
 
-    // Parameterized constructor
+    public Income(Long monthid, String username, String category, double income, Date date) {
+		this.monthid = monthid;
+		this.username = username;
+		this.category = category;
+		this.income = income;
+		this.date = date;
+	}
+
+	// Parameterized constructor
     public Income(String username, Long monthid,String category, double income, Date date) {
         this.username = username;
         this.monthid = monthid;
