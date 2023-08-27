@@ -36,5 +36,14 @@ Springboot-React-MS SQL- ChatGPT API Integration
 
 ## GPT Input Page 
 <img src="https://github.com/Joe-Zhou-Yubin/AEMS/raw/main/ss/GPTInput_Page.png" alt="GPT Input Page Screenshot" width="600">
-
+<br>
+Example Prompt: I spent 20 bucks on food yesterday
+AI Response: 
+{
+  "type": "expenditure",
+  "category": "food",
+  "description": "20 bucks on food",
+  "amount": 20.0,
+  "date": "25-8-23"
+}
 ---
