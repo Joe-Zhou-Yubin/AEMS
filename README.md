@@ -1,4 +1,4 @@
-# Huat Ah
+# Huat Ah!
 Next-Gen Automated Expense Management System
 
 # Tech Stack
